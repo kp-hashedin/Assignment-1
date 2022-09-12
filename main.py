@@ -1,7 +1,10 @@
 from cmath import rect
+from curses import is_term_resized
+from datetime import date, datetime
+from distutils.command.upload import upload
 from logging import raiseExceptions
 from urllib import response
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, File, UploadFile
 from fastapi.responses import JSONResponse
 import models
 from db import get_db, engine
@@ -10,9 +13,10 @@ import schemas
 from operations import ItemRepo
 from sqlalchemy.orm import Session
 from typing import List,Optional
-import pdb
 from typing import List, Union
 import logging
+import pandas as pd
+import csv
 
 app = FastAPI()
 
@@ -88,3 +92,32 @@ def get_all_records_by_tags(tags_name: Union[List[str],None] =  Query(default=No
         else:
             logging.warning("Not present for " + tag)
     return {"resp": filtered_records}
+
+
+
+# BULK write operation with CSV
+@app.post('/items/bulk-write', tags=['Item'])
+async def create_items_using_csv(csv_file: UploadFile = File(...), db: Session = Depends(get_db)):
+    
+    # Reading file using pandas
+    df = pd.read_csv(csv_file.file,  encoding= 'unicode_escape')
+    
+    for row in df.itertuples():
+        db_item = ItemRepo.fetch_by_name_prop_key(db, username=row[1], prop_name= row[2])
+        if db_item:
+            logging.warning("Record already exist")
+        else:
+            try:
+                db_item = models.Item(
+                    username = row[1], prop_name= row[2],
+                    prop_value = row[3], tag_name = row[4]
+                )
+                db.add(db_item)
+                db.commit()
+                logging.info("Entry added into DB")
+                db.refresh(db_item)
+            except:
+                logging.error("Something wrong on DB side")
+                pass
+            
+    return {"resp": "records added successfully"}
