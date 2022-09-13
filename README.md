@@ -18,9 +18,10 @@
 3. Delete a particular metric of a user (username, key pair cannot be repeated).
 4. Get all the metrics of a user.(filters supported: username, key, tags)
 5. Get metrics of all the users by key name(filters supported: tags).
-6. <b>Bulk API to accept a CSV file as input and add entries to the DB.</b>
+6. <b>Bulk API to accept a CSV file as input and add entries to the DB.</b> <br >
 
-
+csv file - [link](https://amedeloitte-my.sharepoint.com/:x:/g/personal/kavpandey_deloitte_com/EY8_gs2BvHVEjIyRXxE-j2EBcV3V4iaA42bEMlHym06gDw?e=RbEBO8)
+use this csv file, or can use any csv file with four fields i.e; <b> username, key, value, tag</b>
 
 ## Some Important points
 1. Python 3.7+ version
