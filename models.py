@@ -10,7 +10,7 @@ class Item(Base):
     id = Column(Integer, primary_key = True, index= True)
     username = Column(String(30), nullable= False)
     prop_name = Column(String(50), nullable = False)
-    prop_value = Column(String(20), nullable = False)
+    prop_value = Column(String(70), nullable = False)
     tag_name = Column(String(50), nullable= False)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=datetime.now())
