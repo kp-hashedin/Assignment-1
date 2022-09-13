@@ -7,7 +7,7 @@ from urllib import response
 from fastapi import Depends, FastAPI, HTTPException, Query, File, UploadFile
 from fastapi.responses import JSONResponse
 import models
-from db import get_db, engine
+from db import engine
 import  models
 import schemas
 from operations import ItemRepo
@@ -17,6 +17,7 @@ from typing import List, Union
 import logging
 import pandas as pd
 import csv
+from dependencies import get_db
 
 app = FastAPI()
 
