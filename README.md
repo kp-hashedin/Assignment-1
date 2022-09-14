@@ -11,6 +11,9 @@
    ```pip install -r requirememts.txt```
 4. Run application using  -
   ```uvicorn main:app --reload```
+  
+<b>Once application is up </b> <br />
+Database health Check - http://localhost:8000/health
 
 ## Functionality
 1. Add Metrics to a user.
