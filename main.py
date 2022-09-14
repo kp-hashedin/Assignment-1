@@ -1,9 +1,3 @@
-from cmath import rect
-from curses import is_term_resized
-from datetime import date, datetime
-from distutils.command.upload import upload
-from logging import raiseExceptions
-from urllib import response
 from fastapi import Depends, FastAPI, HTTPException, Query, File, UploadFile
 from fastapi.responses import JSONResponse
 import models
@@ -12,16 +6,18 @@ import  models
 import schemas
 from operations import ItemRepo
 from sqlalchemy.orm import Session
-from typing import List,Optional
 from typing import List, Union
 import logging
 import pandas as pd
-import csv
-from dependencies import get_db
+from dependencies import get_db, is_database_online
+from fastapi_health import health
 
 app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
+
+# DB healthcheck end point
+app.add_api_route('/health', health([is_database_online]))
 
 @app.exception_handler(Exception)
 def validation_exception_handler(request, err):
